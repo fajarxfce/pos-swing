@@ -3,6 +3,7 @@ package ui.login;
 import model.User;
 import service.AuthService;
 import ui.main.MainFrame;
+import util.BackgroundWorker;
 
 public class LoginController {
     private final LoginFrame view;
@@ -17,20 +18,24 @@ public class LoginController {
     public void login() {
         String username = view.getUsername();
         String password = view.getPassword();
-
         if (username.isEmpty() || password.isEmpty()) {
             view.showError("Username and password cannot be empty");
             return;
         }
-
-        User user = authService.login(username, password);
-
-        if (user != null) {
-            openMainApplication(user);
-        } else {
-            view.showError("Invalid username or password");
-            view.clearFields();
-        }
+        new BackgroundWorker<>(
+            () -> authService.login(username, password),
+            user -> {
+                if (user != null) {
+                    openMainApplication(user);
+                } else {
+                    view.showError("Invalid username or password");
+                    view.clearFields();
+                }
+            },
+            error -> view.showError("An error occurred: " + error.getMessage()),
+            () -> view.setLoading(true),
+            () -> view.setLoading(false)
+        ).execute();
     }
 
     public void cancel() {

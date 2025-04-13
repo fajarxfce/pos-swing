@@ -93,4 +93,12 @@ public class LoginFrame extends JFrame {
         txtPassword.setText("");
         txtUsername.requestFocus();
     }
+
+    public void setLoading(boolean b) {
+        btnLogin.setText(b ? "Loading..." : "Login");
+        btnLogin.setEnabled(!b);
+        btnCancel.setEnabled(!b);
+        txtUsername.setEnabled(!b);
+        txtPassword.setEnabled(!b);
+    }
 }
