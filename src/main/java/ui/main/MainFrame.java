@@ -25,6 +25,9 @@ public class MainFrame extends JFrame {
 
     // Panels
     private ProductPanel productPanel;
+    private JPanel categoryPanel;
+    private JPanel reportsPanel;
+    private JPanel settingsPanel;
 
     public MainFrame(User user) {
         this.currentUser = user;
@@ -59,8 +62,14 @@ public class MainFrame extends JFrame {
 
         // Management menu
         JMenu managementMenu = new JMenu("Management");
-        managementMenu.add(new JMenuItem("Products"));
-        managementMenu.add(new JMenuItem("Categories"));
+        JMenuItem productsItem = new JMenuItem("Products");
+        productsItem.addActionListener(e -> showProductPanel());
+
+        JMenuItem categoriesItem = new JMenuItem("Categories");
+        categoriesItem.addActionListener(e -> showCategoryPanel());
+
+        managementMenu.add(productsItem);
+        managementMenu.add(categoriesItem);
         managementMenu.add(new JMenuItem("Users"));
 
         // Reports menu
@@ -115,6 +124,9 @@ public class MainFrame extends JFrame {
 
         // Add action listeners
         btnProducts.addActionListener(e -> showProductPanel());
+        btnCategories.addActionListener(e -> showCategoryPanel());
+        btnReports.addActionListener(e -> showReportsPanel());
+        btnSettings.addActionListener(e -> showSettingsPanel());
         btnLogout.addActionListener(e -> logout());
 
         // Add components to sidebar
@@ -142,12 +154,14 @@ public class MainFrame extends JFrame {
         button.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
 
         // Hover effect
-        button.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent evt) {
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(new Color(80, 80, 80));
             }
-            public void mouseExited(MouseEvent evt) {
-                button.setBackground(new Color(50, 50, 50));
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                if (!button.equals(getActiveButton())) {
+                    button.setBackground(new Color(50, 50, 50));
+                }
             }
         });
 
@@ -163,13 +177,45 @@ public class MainFrame extends JFrame {
         // Initialize panels
         productPanel = new ProductPanel(this);
 
+        // Create placeholder panels for now
+        categoryPanel = createPlaceholderPanel("Category Management");
+        reportsPanel = createPlaceholderPanel("Reports");
+        settingsPanel = createPlaceholderPanel("Settings");
+
         // Add panels to card layout
         contentPanel.add(productPanel, "PRODUCTS");
+        contentPanel.add(categoryPanel, "CATEGORIES");
+        contentPanel.add(reportsPanel, "REPORTS");
+        contentPanel.add(settingsPanel, "SETTINGS");
+    }
+
+    private JPanel createPlaceholderPanel(String title) {
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel label = new JLabel(title + " - Under Construction", SwingConstants.CENTER);
+        label.setFont(new Font("Dialog", Font.BOLD, 24));
+        label.setForeground(Color.GRAY);
+        panel.add(label, BorderLayout.CENTER);
+        return panel;
     }
 
     private void showProductPanel() {
         cardLayout.show(contentPanel, "PRODUCTS");
         setActiveButton(btnProducts);
+    }
+
+    private void showCategoryPanel() {
+        cardLayout.show(contentPanel, "CATEGORIES");
+        setActiveButton(btnCategories);
+    }
+
+    private void showReportsPanel() {
+        cardLayout.show(contentPanel, "REPORTS");
+        setActiveButton(btnReports);
+    }
+
+    private void showSettingsPanel() {
+        cardLayout.show(contentPanel, "SETTINGS");
+        setActiveButton(btnSettings);
     }
 
     private void setActiveButton(JButton activeButton) {
@@ -184,15 +230,23 @@ public class MainFrame extends JFrame {
         activeButton.setBackground(new Color(100, 100, 100));
     }
 
+    private JButton getActiveButton() {
+        if (btnProducts.getBackground().equals(new Color(100, 100, 100))) return btnProducts;
+        if (btnCategories.getBackground().equals(new Color(100, 100, 100))) return btnCategories;
+        if (btnReports.getBackground().equals(new Color(100, 100, 100))) return btnReports;
+        if (btnSettings.getBackground().equals(new Color(100, 100, 100))) return btnSettings;
+        return null;
+    }
+
     private void logout() {
         dispose();
 
         // Create and show login frame
         SwingUtilities.invokeLater(() -> {
-            LoginFrame loginFrame = new LoginFrame();
-            LoginController loginController = new LoginController(
+            ui.login.LoginFrame loginFrame = new ui.login.LoginFrame();
+            ui.login.LoginController loginController = new ui.login.LoginController(
                     loginFrame,
-                    ServiceLocator.get(service.AuthService.class)
+                    di.ServiceLocator.get(service.AuthService.class)
             );
             loginFrame.setVisible(true);
         });
