@@ -24,6 +24,8 @@ public class LoginFrame extends JFrame {
     private void initComponents() {
         txtUsername = new JTextField(20);
         txtPassword = new JPasswordField(20);
+        txtPassword.setText("admin123");
+        txtUsername.setText("admin");
         btnLogin = new JButton("Login");
         btnCancel = new JButton("Cancel");
     }

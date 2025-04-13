@@ -6,6 +6,7 @@ import ui.category.CategoryPanel;
 import ui.login.LoginController;
 import ui.login.LoginFrame;
 import ui.product.ProductPanel;
+import ui.transaction.TransactionPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,12 +24,14 @@ public class MainFrame extends JFrame {
     private JButton btnReports;
     private JButton btnSettings;
     private JButton btnLogout;
+    private JButton btnTransactions;
 
     // Panels
     private ProductPanel productPanel;
     private JPanel categoryPanel;
     private JPanel reportsPanel;
     private JPanel settingsPanel;
+    private JPanel transactionPanel;
 
     public MainFrame(User user) {
         this.currentUser = user;
@@ -120,6 +123,7 @@ public class MainFrame extends JFrame {
         btnProducts = createMenuButton("Products");
         btnCategories = createMenuButton("Categories");
         btnReports = createMenuButton("Reports");
+        btnTransactions = createMenuButton("Transactions");
         btnSettings = createMenuButton("Settings");
         btnLogout = createMenuButton("Logout");
 
@@ -127,6 +131,7 @@ public class MainFrame extends JFrame {
         btnProducts.addActionListener(e -> showProductPanel());
         btnCategories.addActionListener(e -> showCategoryPanel());
         btnReports.addActionListener(e -> showReportsPanel());
+        btnTransactions.addActionListener(e -> showTransactionPanel());
         btnSettings.addActionListener(e -> showSettingsPanel());
         btnLogout.addActionListener(e -> logout());
 
@@ -136,6 +141,7 @@ public class MainFrame extends JFrame {
         sidebarPanel.add(btnProducts);
         sidebarPanel.add(btnCategories);
         sidebarPanel.add(btnReports);
+        sidebarPanel.add(btnTransactions);
         sidebarPanel.add(btnSettings);
         sidebarPanel.add(Box.createVerticalGlue());
         sidebarPanel.add(btnLogout);
@@ -180,12 +186,14 @@ public class MainFrame extends JFrame {
 
         // Create placeholder panels for now
         categoryPanel = new CategoryPanel(this);
+        transactionPanel = new TransactionPanel(this);
         reportsPanel = createPlaceholderPanel("Reports");
         settingsPanel = createPlaceholderPanel("Settings");
 
         // Add panels to card layout
         contentPanel.add(productPanel, "PRODUCTS");
         contentPanel.add(categoryPanel, "CATEGORIES");
+        contentPanel.add(transactionPanel, "TRANSACTIONS");
         contentPanel.add(reportsPanel, "REPORTS");
         contentPanel.add(settingsPanel, "SETTINGS");
     }
@@ -209,6 +217,11 @@ public class MainFrame extends JFrame {
         setActiveButton(btnCategories);
     }
 
+    private void showTransactionPanel() {
+        cardLayout.show(contentPanel, "TRANSACTIONS");
+        setActiveButton(btnTransactions);
+    }
+
     private void showReportsPanel() {
         cardLayout.show(contentPanel, "REPORTS");
         setActiveButton(btnReports);
@@ -224,6 +237,7 @@ public class MainFrame extends JFrame {
         btnProducts.setBackground(new Color(50, 50, 50));
         btnCategories.setBackground(new Color(50, 50, 50));
         btnReports.setBackground(new Color(50, 50, 50));
+        btnTransactions.setBackground(new Color(50, 50, 50));
         btnSettings.setBackground(new Color(50, 50, 50));
         btnLogout.setBackground(new Color(50, 50, 50));
 

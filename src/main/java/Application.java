@@ -3,6 +3,7 @@ import di.ServiceLocator;
 import service.AuthService;
 import service.CategoryService;
 import service.ProductService;
+import service.TransactionService;
 import ui.login.LoginController;
 import ui.login.LoginFrame;
 
@@ -15,10 +16,12 @@ public class Application {
         UserDAO userDAO = new UserDAOImpl();
         ProductDAO productDAO = new ProductDAOImpl();
         CategoryDAO categoryDAO = new CategoryDAOImpl();
+        TransactionDAO transactionDAO = new TransactionDAOImpl();
 
         // Register Services
         AuthService authService = new AuthService(userDAO);
         ProductService productService = new ProductService(productDAO);
+        TransactionService transactionService = new TransactionService(transactionDAO, productService);
         CategoryService categoryService = new CategoryService(categoryDAO);
 
         ServiceLocator.register(UserDAO.class, userDAO);
@@ -26,6 +29,7 @@ public class Application {
         ServiceLocator.register(CategoryDAO.class, categoryDAO);
         ServiceLocator.register(AuthService.class, authService);
         ServiceLocator.register(ProductService.class, productService);
+        ServiceLocator.register(TransactionService.class, transactionService);
         ServiceLocator.register(CategoryService.class, categoryService);
 
         ServiceLocator.register(UserDAO.class, userDAO);
