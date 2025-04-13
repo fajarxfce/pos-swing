@@ -1,7 +1,8 @@
-import dao.UserDAO;
-import dao.UserDAOImpl;
+import dao.*;
 import di.ServiceLocator;
 import service.AuthService;
+import service.CategoryService;
+import service.ProductService;
 import ui.login.LoginController;
 import ui.login.LoginFrame;
 
@@ -10,8 +11,22 @@ import javax.swing.*;
 public class Application {
     public static void main(String[] args) {
         // Register services
+        // Register DAOs
         UserDAO userDAO = new UserDAOImpl();
+        ProductDAO productDAO = new ProductDAOImpl();
+        CategoryDAO categoryDAO = new CategoryDAOImpl();
+
+        // Register Services
         AuthService authService = new AuthService(userDAO);
+        ProductService productService = new ProductService(productDAO);
+        CategoryService categoryService = new CategoryService(categoryDAO);
+
+        ServiceLocator.register(UserDAO.class, userDAO);
+        ServiceLocator.register(ProductDAO.class, productDAO);
+        ServiceLocator.register(CategoryDAO.class, categoryDAO);
+        ServiceLocator.register(AuthService.class, authService);
+        ServiceLocator.register(ProductService.class, productService);
+        ServiceLocator.register(CategoryService.class, categoryService);
 
         ServiceLocator.register(UserDAO.class, userDAO);
         ServiceLocator.register(AuthService.class, authService);
