@@ -2,6 +2,7 @@ package ui.main;
 
 import di.ServiceLocator;
 import model.User;
+import ui.category.CategoryPanel;
 import ui.login.LoginController;
 import ui.login.LoginFrame;
 import ui.product.ProductPanel;
@@ -178,7 +179,7 @@ public class MainFrame extends JFrame {
         productPanel = new ProductPanel(this);
 
         // Create placeholder panels for now
-        categoryPanel = createPlaceholderPanel("Category Management");
+        categoryPanel = new CategoryPanel(this);
         reportsPanel = createPlaceholderPanel("Reports");
         settingsPanel = createPlaceholderPanel("Settings");
 
