@@ -145,10 +145,8 @@ public class MainFrame extends JFrame {
         sidebarPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         sidebarPanel.add(btnProducts);
         sidebarPanel.add(btnCategories);
-        sidebarPanel.add(btnReports);
         sidebarPanel.add(btnTransactions);
         sidebarPanel.add(btnTransactionsHistory);
-        sidebarPanel.add(btnSettings);
         sidebarPanel.add(Box.createVerticalGlue());
         sidebarPanel.add(btnLogout);
         sidebarPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -207,8 +205,6 @@ public class MainFrame extends JFrame {
         contentPanel.add(categoryPanel, "CATEGORIES");
         contentPanel.add(transactionPanel, "TRANSACTIONS");
         contentPanel.add(transactionHistoryPanel, "TRANSACTION_HISTORY");
-        contentPanel.add(reportsPanel, "REPORTS");
-        contentPanel.add(settingsPanel, "SETTINGS");
     }
 
     private JPanel createPlaceholderPanel(String title) {

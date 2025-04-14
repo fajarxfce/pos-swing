@@ -9,6 +9,7 @@ import java.awt.*;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 public class TransactionHistoryPanel extends JPanel {
     private MainFrame parentFrame;
@@ -22,7 +23,7 @@ public class TransactionHistoryPanel extends JPanel {
     private JButton printButton;
 
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-    private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+    private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("id-ID"));
 
     public TransactionHistoryPanel(MainFrame parentFrame) {
         this.parentFrame = parentFrame;
@@ -62,12 +63,7 @@ public class TransactionHistoryPanel extends JPanel {
 
     private void createTable() {
         String[] columns = {"ID", "Code", "Date", "Customer", "Total", "Items"};
-        tableModel = new DefaultTableModel(columns, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        tableModel = new DefaultTableModel(columns, 0);
 
         transactionTable = new JTable(tableModel);
         transactionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -128,16 +124,16 @@ public class TransactionHistoryPanel extends JPanel {
     private void searchTransactions() {
         String keyword = searchField.getText().trim();
 
-        SwingWorker<java.util.List<Transaction>, Void> worker = new SwingWorker<>() {
+        SwingWorker<List<Transaction>, Void> worker = new SwingWorker<>() {
             @Override
-            protected java.util.List<Transaction> doInBackground() throws Exception {
+            protected List<Transaction> doInBackground() throws Exception {
                 return controller.searchTransactions(keyword);
             }
 
             @Override
             protected void done() {
                 try {
-                    java.util.List<Transaction> transactions = get();
+                    List<Transaction> transactions = get();
                     updateTableData(transactions);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(TransactionHistoryPanel.this,
@@ -150,9 +146,9 @@ public class TransactionHistoryPanel extends JPanel {
     }
 
     public void refreshTransactionList() {
-        SwingWorker<java.util.List<Transaction>, Void> worker = new SwingWorker<>() {
+        SwingWorker<List<Transaction>, Void> worker = new SwingWorker<>() {
             @Override
-            protected java.util.List<Transaction> doInBackground() throws Exception {
+            protected List<Transaction> doInBackground() throws Exception {
                 return controller.getAllTransactions();
             }
 
