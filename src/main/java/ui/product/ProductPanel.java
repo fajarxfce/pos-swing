@@ -6,7 +6,9 @@ import ui.main.MainFrame;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductPanel extends JPanel {
     private MainFrame parentFrame;
@@ -19,6 +21,7 @@ public class ProductPanel extends JPanel {
     private JButton addButton;
     private JButton editButton;
     private JButton deleteButton;
+    private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("id-ID"));
 
     public ProductPanel(MainFrame parentFrame) {
         this.parentFrame = parentFrame;
@@ -136,7 +139,7 @@ public class ProductPanel extends JPanel {
                     product.getId(),
                     product.getCode(),
                     product.getName(),
-                    product.getPrice(),
+                    currencyFormat.format(product.getPrice()),
                     product.getStock(),
                     product.getCategoryName()
             });
