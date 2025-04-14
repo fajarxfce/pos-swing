@@ -21,6 +21,7 @@ public class TransactionHistoryPanel extends JPanel {
     private JTextField searchField;
     private JButton viewButton;
     private JButton printButton;
+    private JButton refreshButton;
 
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("id-ID"));
@@ -50,11 +51,16 @@ public class TransactionHistoryPanel extends JPanel {
         searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
 
+        refreshButton = new JButton("Refresh");
+
         searchButton.addActionListener(e -> searchTransactions());
+        refreshButton.addActionListener(e -> refreshTransactionList());
 
         searchPanel.add(new JLabel("Search:"));
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
+        searchPanel.add(refreshButton);
+
 
         topPanel.add(searchPanel, BorderLayout.EAST);
 
