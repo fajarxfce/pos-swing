@@ -34,7 +34,6 @@ public class CategoryPanel extends JPanel implements ActionListener {
         createTable();
         createButtonPanel();
 
-        // Muat data kategori awal
         refreshCategoryList();
     }
 
@@ -42,12 +41,10 @@ public class CategoryPanel extends JPanel implements ActionListener {
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
-        // Judul
         JLabel titleLabel = new JLabel("Manajemen Kategori");
         titleLabel.setFont(new Font("Dialog", Font.BOLD, 18));
         topPanel.add(titleLabel, BorderLayout.WEST);
 
-        // Panel pencarian
         JPanel searchPanel = new JPanel();
         searchField = new JTextField(20);
         searchButton = new JButton("Cari");
@@ -67,7 +64,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
     }
 
     private void createTable() {
-        String[] columns = {"ID", "Kode", "Nama"};
+        String[] columns = {"ID", "Nama"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -79,12 +76,9 @@ public class CategoryPanel extends JPanel implements ActionListener {
         categoryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         categoryTable.getTableHeader().setReorderingAllowed(false);
 
-        // Atur lebar kolom
         categoryTable.getColumnModel().getColumn(0).setPreferredWidth(50);
         categoryTable.getColumnModel().getColumn(1).setPreferredWidth(150);
-        categoryTable.getColumnModel().getColumn(2).setPreferredWidth(300);
 
-        // Aktifkan pemilihan baris
         ListSelectionModel selectionModel = categoryTable.getSelectionModel();
         selectionModel.addListSelectionListener(e -> {
             boolean hasSelection = categoryTable.getSelectedRow() != -1;
@@ -104,11 +98,9 @@ public class CategoryPanel extends JPanel implements ActionListener {
         editButton = new JButton("Edit Kategori");
         deleteButton = new JButton("Hapus Kategori");
 
-        // Nonaktifkan tombol edit dan hapus di awal
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
 
-        // Tambahkan action listeners
         addButton.addActionListener(this);
         editButton.addActionListener(this);
         deleteButton.addActionListener(this);
@@ -131,7 +123,6 @@ public class CategoryPanel extends JPanel implements ActionListener {
         for (Category category : categories) {
             tableModel.addRow(new Object[]{
                     category.getId(),
-                    category.getCode(),
                     category.getName()
             });
         }

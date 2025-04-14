@@ -73,8 +73,7 @@ public class CategoryService {
 
             String lowercaseKeyword = keyword.toLowerCase();
             for (Category category : allCategories) {
-                if (category.getName().toLowerCase().contains(lowercaseKeyword) ||
-                        (category.getCode() != null && category.getCode().toLowerCase().contains(lowercaseKeyword))) {
+                if (category.getName().toLowerCase().contains(lowercaseKeyword)) {
                     result.add(category);
                 }
             }

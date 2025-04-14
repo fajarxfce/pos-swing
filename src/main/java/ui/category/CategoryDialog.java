@@ -33,7 +33,6 @@ public class CategoryDialog extends JDialog {
     }
 
     private void initComponents() {
-        txtCode = new JTextField(20);
         txtName = new JTextField(20);
 
         btnSave = new JButton("Simpan");
@@ -51,26 +50,14 @@ public class CategoryDialog extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Kode
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(new JLabel("Kode Kategori:"), gbc);
-
-        gbc.gridx = 1;
-        gbc.weightx = 1.0;
-        panel.add(txtCode, gbc);
-
-        // Nama
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.weightx = 0.0;
         panel.add(new JLabel("Nama Kategori:"), gbc);
 
         gbc.gridx = 1;
         gbc.weightx = 1.0;
         panel.add(txtName, gbc);
 
-        // Tombol
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(btnSave);
         buttonPanel.add(btnCancel);
@@ -86,13 +73,11 @@ public class CategoryDialog extends JDialog {
     }
 
     private void populateFields() {
-        txtCode.setText(category.getCode());
         txtName.setText(category.getName());
     }
 
     private void saveCategory() {
-        // Validasi input
-        if (txtCode.getText().trim().isEmpty() || txtName.getText().trim().isEmpty()) {
+        if (txtName.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "Mohon isi semua kolom yang diperlukan!",
                     "Error Validasi",
@@ -101,12 +86,9 @@ public class CategoryDialog extends JDialog {
         }
 
         if (category == null) {
-            // Buat kategori baru
             category = new Category();
         }
 
-        // Update objek kategori
-        category.setCode(txtCode.getText().trim());
         category.setName(txtName.getText().trim());
 
         boolean success = controller.saveCategory(category);
