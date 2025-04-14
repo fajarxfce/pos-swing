@@ -30,7 +30,6 @@ public class ProductPanel extends JPanel {
         createTable();
         createButtonPanel();
 
-        // Load initial product data
         refreshProductList();
     }
 
@@ -38,12 +37,10 @@ public class ProductPanel extends JPanel {
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
-        // Title
         JLabel titleLabel = new JLabel("Product Management");
         titleLabel.setFont(new Font("Dialog", Font.BOLD, 18));
         topPanel.add(titleLabel, BorderLayout.WEST);
 
-        // Search panel
         JPanel searchPanel = new JPanel();
         searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
@@ -100,11 +97,9 @@ public class ProductPanel extends JPanel {
         editButton = new JButton("Edit Product");
         deleteButton = new JButton("Delete Product");
 
-        // Initially disable edit and delete buttons
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
 
-        // Add action listeners
         addButton.addActionListener(e -> showAddProductDialog());
         editButton.addActionListener(e -> {
             int selectedRow = productTable.getSelectedRow();

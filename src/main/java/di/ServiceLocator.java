@@ -12,6 +12,10 @@ public class ServiceLocator {
 
     @SuppressWarnings("unchecked")
     public static <T> T get(Class<T> type) {
-        return (T) services.get(type);
+        if (services.containsKey(type)) {
+            return (T) services.get(type);
+        } else {
+            throw new IllegalArgumentException("Service not found: " + type.getName());
+        }
     }
 }

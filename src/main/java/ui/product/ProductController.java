@@ -20,7 +20,6 @@ public class ProductController {
         this.categoryService = ServiceLocator.get(CategoryService.class);
     }
 
-    // No-arg constructor for dialogs
     public ProductController() {
         this.productService = ServiceLocator.get(ProductService.class);
         this.categoryService = ServiceLocator.get(CategoryService.class);
@@ -60,10 +59,8 @@ public class ProductController {
     public boolean saveProduct(Product product) {
         try {
             if (product.getId() == 0) {
-                // New product
                 return productService.addProduct(product);
             } else {
-                // Existing product
                 return productService.updateProduct(product);
             }
         } catch (Exception e) {

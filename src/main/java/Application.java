@@ -11,8 +11,7 @@ import javax.swing.*;
 
 public class Application {
     public static void main(String[] args) {
-        // Register services
-        // Register DAOs
+
         UserDAO userDAO = new UserDAOImpl();
         ProductDAO productDAO = new ProductDAOImpl();
         CategoryDAO categoryDAO = new CategoryDAOImpl();
@@ -35,7 +34,6 @@ public class Application {
         ServiceLocator.register(UserDAO.class, userDAO);
         ServiceLocator.register(AuthService.class, authService);
 
-        // Start the application
         SwingUtilities.invokeLater(() -> {
             LoginFrame loginFrame = new LoginFrame();
             LoginController loginController = new LoginController(loginFrame, authService);
