@@ -1,9 +1,11 @@
 package ui.login;
 
+import model.Product;
 import model.User;
 import service.AuthService;
 import ui.main.MainFrame;
-import util.BackgroundWorker;
+import javax.swing.*;
+import java.util.List;
 
 public class LoginController {
     private final LoginFrame view;

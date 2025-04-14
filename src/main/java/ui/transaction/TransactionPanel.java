@@ -166,16 +166,16 @@ public class TransactionPanel extends JPanel {
     }
 
     private void loadProducts() {
-        SwingWorker<java.util.List<Product>, Void> worker = new SwingWorker<>() {
+        SwingWorker<List<Product>, Void> worker = new SwingWorker<>() {
             @Override
-            protected java.util.List<Product> doInBackground() throws Exception {
+            protected List<Product> doInBackground() throws Exception {
                 return controller.getAllProducts();
             }
 
             @Override
             protected void done() {
                 try {
-                    java.util.List<Product> products = get();
+                    List<Product> products = get();
                     updateProductTable(products);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(TransactionPanel.this,
@@ -190,16 +190,16 @@ public class TransactionPanel extends JPanel {
     private void searchProducts() {
         String keyword = txtSearchProduct.getText().trim();
 
-        SwingWorker<java.util.List<Product>, Void> worker = new SwingWorker<>() {
+        SwingWorker<List<Product>, Void> worker = new SwingWorker<>() {
             @Override
-            protected java.util.List<Product> doInBackground() throws Exception {
+            protected List<Product> doInBackground() throws Exception {
                 return controller.searchProducts(keyword);
             }
 
             @Override
             protected void done() {
                 try {
-                    java.util.List<Product> products = get();
+                    List<Product> products = get();
                     updateProductTable(products);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(TransactionPanel.this,
