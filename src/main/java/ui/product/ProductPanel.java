@@ -21,6 +21,7 @@ public class ProductPanel extends JPanel {
     private JButton addButton;
     private JButton editButton;
     private JButton deleteButton;
+    private JButton refreshButton;
     private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("id-ID"));
 
     public ProductPanel(MainFrame parentFrame) {
@@ -47,12 +48,15 @@ public class ProductPanel extends JPanel {
         JPanel searchPanel = new JPanel();
         searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
+        refreshButton = new JButton("Segarkan");
 
         searchButton.addActionListener(e -> controller.searchProducts(searchField.getText()));
+        refreshButton.addActionListener(e -> refreshProductList());
 
         searchPanel.add(new JLabel("Search:"));
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
+        searchPanel.add(refreshButton);
 
         topPanel.add(searchPanel, BorderLayout.EAST);
 

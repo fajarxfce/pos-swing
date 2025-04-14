@@ -11,3 +11,6 @@
 Default login akses
     - Username: `admin`
     - Password: `admin123`
+
+### Link Project
+https://github.com/fajarxfce/pos-swing
