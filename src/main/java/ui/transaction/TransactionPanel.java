@@ -8,9 +8,11 @@ import ui.main.MainFrame;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 public class TransactionPanel extends JPanel {
     private MainFrame parentFrame;
@@ -36,6 +38,7 @@ public class TransactionPanel extends JPanel {
     private JSpinner quantitySpinner;
 
     private Transaction currentTransaction;
+    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("id-ID"));
 
     public TransactionPanel(MainFrame parentFrame) {
         this.parentFrame = parentFrame;
@@ -277,7 +280,7 @@ public class TransactionPanel extends JPanel {
     }
 
     private void updateTotal() {
-        txtTotal.setText(String.format("%.2f", currentTransaction.getTotalAmount()));
+        txtTotal.setText(formatter.format(currentTransaction.getTotalAmount()));
     }
 
     private void checkout() {
