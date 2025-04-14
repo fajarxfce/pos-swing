@@ -1,0 +1,254 @@
+-- Database creation
+CREATE DATABASE IF NOT EXISTS pos_db;
+USE pos_db;
+
+-- Users table
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    role VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Product categories
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    description VARCHAR(255)
+);
+
+-- Products table
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    code VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    category_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+-- Customers table
+CREATE TABLE customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    address TEXT
+);
+
+-- Transactions/Sales table
+CREATE TABLE sales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    invoice_number VARCHAR(20) NOT NULL UNIQUE,
+    customer_id INT,
+    user_id INT NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    paid_amount DECIMAL(10,2) NOT NULL,
+    change_amount DECIMAL(10,2) NOT NULL,
+    sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Sale details/items
+CREATE TABLE sale_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sale_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (sale_id) REFERENCES sales(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+CREATE TABLE transactions (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    code VARCHAR(50) NOT NULL,
+    transaction_date TIMESTAMP NOT NULL,
+    total_amount DOUBLE NOT NULL,
+    customer_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE transaction_items (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    transaction_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL,
+    price DOUBLE NOT NULL,
+    FOREIGN KEY (transaction_id) REFERENCES transactions(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+-- Insert admin user for testing
+INSERT INTO users (username, password, full_name, role)
+VALUES ('admin', 'admin123', 'Administrator', 'admin');
+
+INSERT INTO categories (name) VALUES
+('Electronics'),
+('Groceries'),
+('Clothing'),
+('Home Appliances'),
+('Furniture'),
+('Books'),
+('Sports Equipment'),
+('Toys'),
+('Stationery'),
+('Beauty Products'),
+('Kitchen Utensils'),
+('Gardening Tools'),
+('Office Supplies'),
+('Automotive'),
+('Baby Products'),
+('Health Care'),
+('Shoes'),
+('Jewelry'),
+('Pet Supplies'),
+('Music Instruments');
+
+-- Insert 100 dummy products across all categories
+INSERT INTO products (name, code, price, stock, category_id) VALUES
+-- Electronics (Category ID: 1)
+('Samsung Smart TV 55"', 'EL001', 10499850, 15, 1),
+('Apple iPhone 13', 'EL002', 13499850, 25, 1),
+('Dell XPS 15 Laptop', 'EL003', 19499850, 10, 1),
+('Sony Wireless Headphones', 'EL004', 2249850, 30, 1),
+('Logitech Wireless Mouse', 'EL005', 449850, 50, 1),
+
+-- Groceries (Category ID: 2)
+('Organic Bananas (Bunch)', 'GR001', 44850, 100, 2),
+('Whole Milk (1 Gallon)', 'GR002', 52350, 40, 2),
+('White Bread', 'GR003', 29850, 45, 2),
+('Free Range Eggs (Dozen)', 'GR004', 74850, 30, 2),
+('Ground Coffee (12oz)', 'GR005', 134850, 25, 2),
+
+-- Clothing (Category ID: 3)
+('Men\'s Cotton T-shirt', 'CL001', 299850, 40, 3),
+('Women\'s Jeans', 'CL002', 599850, 35, 3),
+('Kids Winter Jacket', 'CL003', 749850, 20, 3),
+('Cotton Socks Pack', 'CL004', 149850, 60, 3),
+('Summer Hat', 'CL005', 224850, 25, 3),
+
+-- Home Appliances (Category ID: 4)
+('Microwave Oven', 'HA001', 1349850, 15, 4),
+('Coffee Maker', 'HA002', 749850, 20, 4),
+('Toaster', 'HA003', 449850, 25, 4),
+('Vacuum Cleaner', 'HA004', 2249850, 10, 4),
+('Electric Kettle', 'HA005', 524850, 30, 4),
+
+-- Furniture (Category ID: 5)
+('Dining Table', 'FU001', 4499850, 5, 5),
+('Office Chair', 'FU002', 1949850, 15, 5),
+('Sofa Set', 'FU003', 8999850, 8, 5),
+('Bookshelf', 'FU004', 2249850, 12, 5),
+('Queen Size Bed', 'FU005', 5249850, 7, 5),
+
+-- Books (Category ID: 6)
+('Python Programming Guide', 'BO001', 524850, 20, 6),
+('Harry Potter Complete Set', 'BO002', 1349850, 15, 6),
+('Java For Beginners', 'BO003', 449850, 25, 6),
+('Game of Thrones Book 1', 'BO004', 299850, 30, 6),
+('The Art of War', 'BO005', 224850, 35, 6),
+
+-- Sports Equipment (Category ID: 7)
+('Tennis Racket', 'SP001', 899850, 18, 7),
+('Basketball', 'SP002', 374850, 22, 7),
+('Yoga Mat', 'SP003', 299850, 40, 7),
+('Dumbbells Set', 'SP004', 1199850, 15, 7),
+('Running Shoes', 'SP005', 1349850, 25, 7),
+
+-- Toys (Category ID: 8)
+('LEGO Star Wars Set', 'TO001', 749850, 20, 8),
+('Barbie Doll', 'TO002', 299850, 35, 8),
+('Remote Control Car', 'TO003', 599850, 18, 8),
+('Board Game - Monopoly', 'TO004', 374850, 22, 8),
+('Stuffed Teddy Bear', 'TO005', 224850, 40, 8),
+
+-- Stationery (Category ID: 9)
+('Ballpoint Pen Pack', 'ST001', 89850, 100, 9),
+('Notebook Set', 'ST002', 149850, 60, 9),
+('Desk Organizer', 'ST003', 299850, 30, 9),
+('Scissors Pack', 'ST004', 119850, 45, 9),
+('Whiteboard Marker Set', 'ST005', 134850, 50, 9),
+
+-- Beauty Products (Category ID: 10)
+('Face Moisturizer', 'BP001', 374850, 35, 10),
+('Lipstick Set', 'BP002', 299850, 40, 10),
+('Shampoo (16oz)', 'BP003', 149850, 50, 10),
+('Perfume', 'BP004', 749850, 25, 10),
+('Makeup Brush Set', 'BP005', 449850, 20, 10),
+
+-- Kitchen Utensils (Category ID: 11)
+('Knife Set', 'KU001', 599850, 25, 11),
+('Cooking Pot', 'KU002', 449850, 30, 11),
+('Measuring Cups', 'KU003', 194850, 40, 11),
+('Silicone Spatula Set', 'KU004', 224850, 35, 11),
+('Cutting Board', 'KU005', 299850, 30, 11),
+
+-- Gardening Tools (Category ID: 12)
+('Garden Shovel', 'GT001', 374850, 20, 12),
+('Pruning Shears', 'GT002', 299850, 25, 12),
+('Watering Can', 'GT003', 224850, 30, 12),
+('Plant Pot Set', 'GT004', 449850, 40, 12),
+('Garden Gloves', 'GT005', 149850, 50, 12),
+
+-- Office Supplies (Category ID: 13)
+('Stapler', 'OS001', 134850, 40, 13),
+('File Folders (Pack of 50)', 'OS002', 194850, 35, 13),
+('Printer Paper (Ream)', 'OS003', 104850, 60, 13),
+('Desk Lamp', 'OS004', 374850, 20, 13),
+('Business Card Holder', 'OS005', 224850, 25, 13),
+
+-- Automotive (Category ID: 14)
+('Car Wax', 'AU001', 299850, 30, 14),
+('Windshield Wipers', 'AU002', 374850, 40, 14),
+('Air Freshener', 'AU003', 89850, 80, 14),
+('Motor Oil', 'AU004', 344850, 50, 14),
+('Tire Pressure Gauge', 'AU005', 149850, 35, 14),
+
+-- Baby Products (Category ID: 15)
+('Baby Formula', 'BB001', 374850, 30, 15),
+('Diapers (Pack of 50)', 'BB002', 299850, 40, 15),
+('Baby Wipes', 'BB003', 89850, 70, 15),
+('Baby Bottle Set', 'BB004', 239850, 25, 15),
+('Baby Monitor', 'BB005', 1349850, 15, 15),
+
+-- Health Care (Category ID: 16)
+('First Aid Kit', 'HC001', 449850, 40, 16),
+('Digital Thermometer', 'HC002', 224850, 35, 16),
+('Pain Reliever Tablets', 'HC003', 119850, 60, 16),
+('Vitamin C Supplements', 'HC004', 194850, 45, 16),
+('Hand Sanitizer', 'HC005', 74850, 100, 16),
+
+-- Shoes (Category ID: 17)
+('Men\'s Casual Shoes', 'SH001', 899850, 20, 17),
+('Women\'s Sneakers', 'SH002', 974850, 25, 17),
+('Kids School Shoes', 'SH003', 599850, 30, 17),
+('Hiking Boots', 'SH004', 1349850, 15, 17),
+('Slippers', 'SH005', 299850, 40, 17),
+
+-- Jewelry (Category ID: 18)
+('Silver Necklace', 'JW001', 1499850, 10, 18),
+('Gold Earrings', 'JW002', 2249850, 8, 18),
+('Diamond Ring', 'JW003', 7499850, 5, 18),
+('Bracelet', 'JW004', 1199850, 15, 18),
+('Wristwatch', 'JW005', 1949850, 12, 18),
+
+-- Pet Supplies (Category ID: 19)
+('Dog Food (15lb)', 'PS001', 449850, 25, 19),
+('Cat Litter (20lb)', 'PS002', 224850, 30, 19),
+('Pet Bed', 'PS003', 599850, 20, 19),
+('Pet Toys Set', 'PS004', 299850, 35, 19),
+('Pet Grooming Brush', 'PS005', 149850, 40, 19),
+
+-- Music Instruments (Category ID: 20)
+('Acoustic Guitar', 'MI001', 2999850, 10, 20),
+('Digital Keyboard', 'MI002', 4499850, 8, 20),
+('Drum Set', 'MI003', 5999850, 5, 20),
+('Violin', 'MI004', 3749850, 7, 20),
+('Harmonica', 'MI005', 299850, 30, 20);
