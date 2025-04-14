@@ -36,22 +36,15 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean authenticate(String username, String password) throws SQLException {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
 
-        try {
-            conn = DatabaseUtil.getConnection();
-            stmt = conn.prepareStatement(sql);
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, username);
-            stmt.setString(2, password); // Consider using hashed passwords
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
 
-            rs = stmt.executeQuery();
-            return rs.next(); // Returns true if credentials match
-        } catch (SQLException e) {
-            return false;
-        } finally {
-            DatabaseUtil.closeResources(rs, stmt, conn); // This is critical
+            return rs.next();
         }
     }
 
