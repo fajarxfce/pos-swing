@@ -5,6 +5,7 @@ import model.Product;
 import model.Transaction;
 import model.TransactionItem;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,5 +55,25 @@ public class TransactionService {
             LOGGER.log(Level.SEVERE, "Error saving transaction", e);
             return false;
         }
+    }
+
+    public List<Transaction> getAllTransactions() throws Exception {
+        return transactionDAO.getAllTransactions();
+    }
+
+    public Transaction getTransactionById(int id) throws Exception {
+        return transactionDAO.getTransactionById(id);
+    }
+
+    public List<Transaction> searchTransactions(String keyword) throws Exception {
+        return transactionDAO.searchTransactions(keyword);
+    }
+
+    public boolean printReceipt(int transactionId) throws Exception {
+        Transaction transaction = getTransactionById(transactionId);
+        if (transaction == null) {
+            return false;
+        }
+        return true;
     }
 }

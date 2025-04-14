@@ -17,4 +17,7 @@ public interface TransactionDAO {
     List<Transaction> getAllTransactions();
 
     List<TransactionItem> getTransactionItemsByTransactionId(int transactionId);
+
+    List<Transaction> searchTransactions(String keyword);
 }
+

@@ -6,6 +6,7 @@ import ui.category.CategoryPanel;
 import ui.login.LoginController;
 import ui.login.LoginFrame;
 import ui.product.ProductPanel;
+import ui.transaction.TransactionHistoryPanel;
 import ui.transaction.TransactionPanel;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class MainFrame extends JFrame {
     private JButton btnSettings;
     private JButton btnLogout;
     private JButton btnTransactions;
+    private JButton btnTransactionsHistory;
 
     // Panels
     private ProductPanel productPanel;
@@ -32,6 +34,7 @@ public class MainFrame extends JFrame {
     private JPanel reportsPanel;
     private JPanel settingsPanel;
     private JPanel transactionPanel;
+    private JPanel transactionHistoryPanel;
 
     public MainFrame(User user) {
         this.currentUser = user;
@@ -124,6 +127,7 @@ public class MainFrame extends JFrame {
         btnCategories = createMenuButton("Categories");
         btnReports = createMenuButton("Reports");
         btnTransactions = createMenuButton("Transactions");
+        btnTransactionsHistory = createMenuButton("Transaction History");
         btnSettings = createMenuButton("Settings");
         btnLogout = createMenuButton("Logout");
 
@@ -132,6 +136,7 @@ public class MainFrame extends JFrame {
         btnCategories.addActionListener(e -> showCategoryPanel());
         btnReports.addActionListener(e -> showReportsPanel());
         btnTransactions.addActionListener(e -> showTransactionPanel());
+        btnTransactionsHistory.addActionListener(e -> showTransactionHistoryPanel());
         btnSettings.addActionListener(e -> showSettingsPanel());
         btnLogout.addActionListener(e -> logout());
 
@@ -142,12 +147,18 @@ public class MainFrame extends JFrame {
         sidebarPanel.add(btnCategories);
         sidebarPanel.add(btnReports);
         sidebarPanel.add(btnTransactions);
+        sidebarPanel.add(btnTransactionsHistory);
         sidebarPanel.add(btnSettings);
         sidebarPanel.add(Box.createVerticalGlue());
         sidebarPanel.add(btnLogout);
         sidebarPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         add(sidebarPanel, BorderLayout.WEST);
+    }
+
+    private void showTransactionHistoryPanel() {
+        cardLayout.show(contentPanel, "TRANSACTION_HISTORY");
+        setActiveButton(btnTransactionsHistory);
     }
 
     private JButton createMenuButton(String text) {
@@ -187,6 +198,7 @@ public class MainFrame extends JFrame {
         // Create placeholder panels for now
         categoryPanel = new CategoryPanel(this);
         transactionPanel = new TransactionPanel(this);
+        transactionHistoryPanel = new TransactionHistoryPanel(this);
         reportsPanel = createPlaceholderPanel("Reports");
         settingsPanel = createPlaceholderPanel("Settings");
 
@@ -194,6 +206,7 @@ public class MainFrame extends JFrame {
         contentPanel.add(productPanel, "PRODUCTS");
         contentPanel.add(categoryPanel, "CATEGORIES");
         contentPanel.add(transactionPanel, "TRANSACTIONS");
+        contentPanel.add(transactionHistoryPanel, "TRANSACTION_HISTORY");
         contentPanel.add(reportsPanel, "REPORTS");
         contentPanel.add(settingsPanel, "SETTINGS");
     }

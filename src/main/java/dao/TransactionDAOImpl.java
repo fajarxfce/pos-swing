@@ -194,4 +194,34 @@ public class TransactionDAOImpl implements TransactionDAO {
 
         return items;
     }
+
+    @Override
+    public List<Transaction> searchTransactions(String keyword) {
+        String sql = "SELECT * FROM transactions WHERE code LIKE ? OR customer_name LIKE ?";
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String searchPattern = "%" + keyword + "%";
+            stmt.setString(1, searchPattern);
+            stmt.setString(2, searchPattern);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Transaction transaction = new Transaction();
+                    transaction.setId(rs.getInt("id"));
+                    transaction.setCode(rs.getString("code"));
+                    transaction.setTransactionDate(rs.getTimestamp("transaction_date").toLocalDateTime());
+                    transaction.setTotalAmount(rs.getDouble("total_amount"));
+                    transaction.setCustomerName(rs.getString("customer_name"));
+
+                    transactions.add(transaction);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error searching transactions", e);
+        }
+        return transactions;
+    }
 }
